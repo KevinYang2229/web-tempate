@@ -1,0 +1,43 @@
+@host = http://localhost:3000
+@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImlhdCI6MTc2MzAxMjAzNywiZXhwIjoxNzYzMDEyNjM3fQ.DBeH_KVUsbsx-d93GKIDMBn0dXNSL5JG-KJZqn-SLwk
+@content-type = application/json
+@accept = application/json
+@base-path = /api/v1
+@http-version = HTTP/1.1
+
+### GET NOTES
+GET {{base-path}}/notes {{http-version}}
+Host: {{host}}
+Authorization: {{authorization}}
+
+### GET NOTE BY ID
+GET {{base-path}}/notes/20 {{http-version}}
+Host: {{host}}
+Authorization: {{authorization}}
+
+### CREATE NEW NOTE
+POST {{base-path}}/notes {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+Authorization: {{authorization}}
+
+{
+  "title": "Sample Note",
+  "content": "This is a sample note."
+}
+
+### UPDATE NOTE BY ID
+PUT {{base-path}}/notes/20 {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+Authorization: {{authorization}}
+
+{
+  "title": "Updated Sample Note",
+  "content": "This is an updated sample note."
+}
+
+### DELETE NOTE BY ID
+DELETE {{base-path}}/notes/11 {{http-version}}
+Host: {{host}}
+Authorization: {{authorization}}

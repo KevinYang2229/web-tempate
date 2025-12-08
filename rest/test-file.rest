@@ -1,0 +1,34 @@
+@host = http://localhost:3000
+@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImlhdCI6MTc2MzAxMjAzNywiZXhwIjoxNzYzMDEyNjM3fQ.DBeH_KVUsbsx-d93GKIDMBn0dXNSL5JG-KJZqn-SLwk
+@content-type = application/json
+@accept = application/json
+@base-path = /api/v1
+@http-version = HTTP/1.1
+
+### Upload a file
+POST {{base-path}}/files/upload {{http-version}}
+Host: {{host}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW0
+Authorization: {{authorization}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW0
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+This is a test file content.
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW0--
+
+### Upload base64 image file
+POST {{base-path}}/files/upload {{http-version}}
+Host: {{host}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryE19zNvXWfXJ0
+Authorization: {{authorization}}
+
+------WebKitFormBoundaryE19zNvXWfXJ0
+Content-Disposition: form-data; name="file"; filename="image.png"
+Content-Type: image/png
+
+iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC
+
+------WebKitFormBoundaryE19zNvXWfXJ0--

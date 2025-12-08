@@ -1,0 +1,67 @@
+@host = http://localhost:3000
+@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImlhdCI6MTc2NDc0MDE2MywiZXhwIjoxNzY0NzQwNzYzfQ.hKHHTKPez8qoY2cpEDgrrkK_Z0njzpHba4q5JFXA7Bc
+@content-type = application/json
+@accept = application/json
+@base-path = /api/v1
+@http-version = HTTP/1.1
+
+### REGISTER NEW USER
+POST {{base-path}}/auth/register {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+Accept: {{accept}}
+Authorization: {{authorization}}
+
+{
+  "username": "testuseraaa",
+  "password": "testpasswordaaa",
+  "email": "testuseraaa@example.com"
+}
+
+### REFRESH ACCESS TOKEN
+POST {{base-path}}/auth/refresh {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+Authorization: {{authorization}}
+
+### LOGIN USER
+POST {{base-path}}/auth/login {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+
+{
+  "username": "testuser",
+  "password": "testpassword"
+}
+
+### LOGIN USER WITH NEW CREDENTIALS
+POST {{base-path}}/auth/login {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+
+{
+  "username": "",
+  "password": "testpasswordz"
+}
+
+### LOGIN USER WITH GOOGLE OAUTH
+POST {{base-path}}/auth/login/google {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+
+{
+  "code": "authorization_code_from_google",
+  "code_verifier": "code_verifier_used_in_pkce"
+}
+
+### LOGOUT USER
+POST {{base-path}}/auth/logout {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+Authorization: {{authorization}}
+
+### REVOKE ALL REFRESH TOKENS
+POST {{base-path}}/auth/revoke-all {{http-version}}
+Host: {{host}}
+Content-Type: {{content-type}}
+Authorization: {{authorization}}

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket.IO 測試頁面</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+      }
+      .status {
+        padding: 10px;
+        margin: 20px 0;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .connected {
+        background: #d4edda;
+        color: #155724;
+      }
+      .disconnected {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      #messages {
+        border: 1px solid #ddd;
+        padding: 15px;
+        height: 200px;
+        overflow-y: auto;
+        margin: 20px 0;
+        background: #fafafa;
+      }
+      .message-wrapper {
+        clear: both;
+        margin: 8px 0;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 8px;
+      }
+      .avatar {
+        align-self: flex-end;
+        margin-bottom: 20px;
+      }
+      .message-wrapper.my-wrapper {
+        flex-direction: row-reverse;
+      }
+      .message-content-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 70%;
+      }
+      .message-wrapper.my-wrapper .message-content-wrapper {
+        align-items: flex-end;
+      }
+      .message-wrapper.other-wrapper .message-content-wrapper {
+        align-items: flex-start;
+      }
+      .message-name {
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        opacity: 0.7;
+        color: #666;
+      }
+      .message-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+      }
+      .message-wrapper.my-wrapper .message-row {
+        flex-direction: row-reverse;
+      }
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        flex-shrink: 0;
+      }
+      .message {
+        padding: 8px 12px;
+        max-width: 70%;
+        word-wrap: break-word;
+      }
+      .message-time {
+        font-size: 0.75em;
+        color: #999;
+        flex-shrink: 0;
+      }
+      .message-content {
+        word-wrap: break-word;
+      }
+      .message.my-message {
+        color: #1976d2;
+        font-weight: 500;
+        background: #e3f2fd;
+        border-radius: 12px;
+      }
+      .message.other-message {
+        color: #424242;
+        background: #e0e0e0;
+        border-radius: 12px;
+      }
+      .message.system-message {
+        color: #f57c00;
+        font-style: italic;
+        font-size: 0.9em;
+        text-align: center;
+        float: none;
+        max-width: 100%;
+        background: transparent;
+      }
+      input,
+      button {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>WebSocket 連接測試</h1>
+      <div id="status" class="status disconnected">未連接</div>
+
+      <div style="margin: 10px 0">
+        <input
+          type="text"
+          id="usernameInput"
+          placeholder="輸入你的名稱..."
+          style="width: 50%"
+        />
+        <button onclick="setUsername()">設定名稱</button>
+      </div>
+
+      <div id="messages"></div>
+
+      <div style="display: flex">
+        <input
+          style="flex: 1"
+          type="text"
+          id="messageInput"
+          placeholder="輸入訊息..."
+        />
+        <button style="width: 80px" onclick="sendMessage()">發送</button>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io("http://localhost:4000");
+      const statusDiv = document.getElementById("status");
+      const messagesDiv = document.getElementById("messages");
+      const messageInput = document.getElementById("messageInput");
+      const usernameInput = document.getElementById("usernameInput");
+      let myUsername = "";
+
+      // 根據使用者名稱產生固定的顏色
+      function getAvatarColor(username) {
+        const colors = [
+          "#e91e63",
+          "#9c27b0",
+          "#673ab7",
+          "#3f51b5",
+          "#2196f3",
+          "#00bcd4",
+          "#009688",
+          "#4caf50",
+          "#ff9800",
+          "#ff5722",
+        ];
+        let hash = 0;
+        for (let i = 0; i < username.length; i++) {
+          hash = username.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return colors[Math.abs(hash) % colors.length];
+      }
+
+      // 取得使用者名稱的第一個字符作為頭像
+      function getAvatarText(username) {
+        return username.charAt(0).toUpperCase();
+      }
+
+      socket.on("connect", () => {
+        myUsername = `訪客${socket.id.slice(0, 4)}`;
+        statusDiv.textContent = `已連接 - ${myUsername}`;
+        statusDiv.className = "status connected";
+        addMessage("系統", "已連接到服務器", "system");
+      });
+
+      function setUsername() {
+        const newName = usernameInput.value.trim();
+        if (newName) {
+          myUsername = newName;
+          socket.emit("set-username", newName);
+          statusDiv.textContent = `已連接 - ${myUsername}`;
+          usernameInput.value = "";
+          addMessage("系統", `你的名稱已設定為: ${newName}`, "system");
+        }
+      }
+
+      socket.on("disconnect", () => {
+        statusDiv.textContent = "未連接";
+        statusDiv.className = "status disconnected";
+        addMessage("系統", "已斷開連接", "system");
+      });
+
+      // 接收其他用戶的訊息
+      socket.on("message", (data) => {
+        addMessage(data.username, data.message, "other");
+      });
+
+      // 用戶加入通知
+      socket.on("user-joined", (data) => {
+        addMessage("系統", `${data.username} 加入了聊天室`, "system");
+      });
+
+      // 用戶離開通知
+      socket.on("user-left", (data) => {
+        addMessage("系統", `${data.username} 離開了聊天室`, "system");
+      });
+
+      // 用戶名稱變更通知
+      socket.on("username-changed", (data) => {
+        if (data.socketId !== socket.id) {
+          addMessage(
+            "系統",
+            `${data.oldName} 改名為 ${data.newName}`,
+            "system",
+          );
+        }
+      });
+
+      function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+          socket.emit("message", message);
+          addMessage(`${myUsername} (你)`, message, "my");
+          messageInput.value = "";
+        }
+      }
+
+      usernameInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          setUsername();
+        }
+      });
+
+      function addMessage(sender, message, type = "other") {
+        if (type === "system") {
+          const messageDiv = document.createElement("div");
+          messageDiv.style.textAlign = "center";
+          messageDiv.style.color = "#f57c00";
+          messageDiv.style.fontStyle = "italic";
+          messageDiv.style.fontSize = "0.9em";
+          messageDiv.style.margin = "10px 0";
+          messageDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+          messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+        } else {
+          // 創建包裝器
+          const wrapperDiv = document.createElement("div");
+          wrapperDiv.className = `message-wrapper ${
+            type === "my" ? "my-wrapper" : "other-wrapper"
+          }`;
+
+          // 創建頭像
+          const avatarDiv = document.createElement("div");
+          avatarDiv.className = "avatar";
+          const displayName = type === "my" ? myUsername : sender;
+          avatarDiv.style.backgroundColor = getAvatarColor(displayName);
+          avatarDiv.textContent = getAvatarText(displayName);
+
+          wrapperDiv.appendChild(avatarDiv);
+
+          // 創建內容包裝器（名字 + 訊息列）
+          const contentWrapper = document.createElement("div");
+          contentWrapper.className = "message-content-wrapper";
+
+          // 只有對方的訊息顯示名字
+          if (type === "other") {
+            const nameDiv = document.createElement("div");
+            nameDiv.className = "message-name";
+            nameDiv.textContent = sender;
+            contentWrapper.appendChild(nameDiv);
+          }
+
+          // 創建訊息和時間的橫向容器
+          const rowDiv = document.createElement("div");
+          rowDiv.className = "message-row";
+
+          const messageDiv = document.createElement("div");
+          messageDiv.className = `message ${type}-message`;
+
+          const contentDiv = document.createElement("div");
+          contentDiv.className = "message-content";
+          contentDiv.textContent = message;
+          messageDiv.appendChild(contentDiv);
+
+          // 時間顯示在訊息旁邊
+          const timeDiv = document.createElement("div");
+          timeDiv.className = "message-time";
+          timeDiv.textContent = new Date().toLocaleTimeString();
+
+          rowDiv.appendChild(messageDiv);
+          rowDiv.appendChild(timeDiv);
+          contentWrapper.appendChild(rowDiv);
+          wrapperDiv.appendChild(contentWrapper);
+          messagesDiv.appendChild(wrapperDiv);
+        }
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      messageInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
+    </script>
+  </body>
+</html>
