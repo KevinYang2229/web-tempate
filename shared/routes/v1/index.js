@@ -12,7 +12,7 @@ const router = express.Router();
 router.use("/auth", authRouter);
 
 // Notes routes (需要驗證)
-router.use("/notes", noteRouter);
+router.use("/notes", authenticateToken, noteRouter);
 
 // Files routes (需要驗證)
 router.use("/files", authenticateToken, fileRouter);
