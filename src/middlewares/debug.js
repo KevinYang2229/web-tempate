@@ -1,10 +1,10 @@
 const requestInfo = (req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  console.log("Headers:", req.headers);
+  console.log(`${req.method} ${req.url}`)
+  console.log('Headers:', req.headers)
   if (req.body && Object.keys(req.body).length > 0) {
-    console.log("Body:", req.body);
+    console.log('Body:', req.body)
   }
-  next();
-};
+  next()
+}
 
-export { requestInfo };
+export { requestInfo }
