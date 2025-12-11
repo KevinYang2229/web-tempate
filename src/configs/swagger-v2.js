@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
 const projectDirName = process.cwd();
-const __dirname = join(projectDirName, "shared", "configs");
+const __dirname = join(projectDirName, "src", "shared", "configs");
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
 

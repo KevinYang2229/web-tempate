@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "api",
-      script: "./servers/api-server.js",
+      script: "src/servers/api-server.js",
       instances: "1",
       exec_mode: "cluster",
       env: {
@@ -47,7 +47,7 @@ module.exports = {
     },
     {
       name: "socket",
-      script: "./servers/socket-server.js",
+      script: "src/servers/socket-server.js",
       instances: 1,
       exec_mode: "fork",
       env: {

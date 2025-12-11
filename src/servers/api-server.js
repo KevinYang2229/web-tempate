@@ -6,13 +6,13 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
-import swaggerV1 from "../shared/configs/swagger-v1.js";
-import swaggerV2 from "../shared/configs/swagger-v2.js";
-import { requestInfo } from "../shared/middlewares/debug.js";
-import errorHandler from "../shared/middlewares/error.js";
-import v1Router from "../shared/routes/v1/index.js";
-import v2Router from "../shared/routes/v2/index.js";
-import fileRouter from "../shared/routes/v1/file-router.js";
+import swaggerV1 from "../configs/swagger-v1.js";
+import swaggerV2 from "../configs/swagger-v2.js";
+import { requestInfo } from "../middlewares/debug.js";
+import errorHandler from "../middlewares/error.js";
+import v1Router from "../routes/v1/index.js";
+import v2Router from "../routes/v2/index.js";
+import fileRouter from "../routes/v1/file-router.js";
 import {
   API_VERSION,
   SERVER_PORT,
@@ -20,7 +20,7 @@ import {
   CORS_METHODS,
   RATE_LIMIT_WINDOW_MS,
   RATE_LIMIT_MAX_REQUESTS,
-} from "../shared/configs/constants.js";
+} from "../configs/constants.js";
 
 import checkDiskSpace from "check-disk-space";
 

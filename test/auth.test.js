@@ -1,7 +1,7 @@
 import request from "supertest";
 import { describe } from "@jest/globals";
-import app from "../servers/api-server.js";
-import { API_VERSION } from "../shared/configs/constants.js";
+import app from "../src/servers/api-server.js";
+import { API_VERSION } from "../src/configs/constants.js";
 
 describe("Authentication Middleware", () => {
   // test("register a new user", async () => {

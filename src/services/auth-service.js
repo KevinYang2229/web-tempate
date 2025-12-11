@@ -24,7 +24,7 @@ const register = async (username, password, email) => {
   const existingUser = await getUserByUsername(username);
   if (existingUser) {
     const error = new Error("Username already exists");
-    error.status = 409;
+    error.statusCode = 409;
     throw error;
   }
 
@@ -61,7 +61,7 @@ const login = async (username, password) => {
   const user = await getUserByUsername(username);
   if (!user) {
     const error = new Error("Invalid username or password");
-    error.status = 401;
+    error.statusCode = 401;
     throw error;
   }
 
@@ -69,7 +69,7 @@ const login = async (username, password) => {
   const passwordMatch = await bcrypt.compare(password, user.password_hash);
   if (!passwordMatch) {
     const error = new Error("Invalid username or password");
-    error.status = 401;
+    error.statusCode = 401;
     throw error;
   }
 
@@ -97,7 +97,7 @@ const login = async (username, password) => {
 const refreshToken = async (oldRefreshToken) => {
   if (!oldRefreshToken) {
     const error = new Error("No refresh token provided");
-    error.status = 401;
+    error.statusCode = 401;
     throw error;
   }
 
@@ -108,7 +108,7 @@ const refreshToken = async (oldRefreshToken) => {
   const user = await getUserById(decoded.id);
   if (!user) {
     const error = new Error("User not found");
-    error.status = 404;
+    error.statusCode = 404;
     throw error;
   }
 
@@ -117,7 +117,7 @@ const refreshToken = async (oldRefreshToken) => {
 
   if (tokenVersion !== currentTokenVersion) {
     const error = new Error("Refresh token has been revoked");
-    error.status = 403;
+    error.statusCode = 403;
     throw error;
   }
 

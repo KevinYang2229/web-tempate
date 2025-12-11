@@ -1,7 +1,7 @@
 const uploadFile = (req, res, next) => {
   if (!req.file) {
     const error = new Error("No file uploaded");
-    error.status = 400;
+    res.status(400);
     return next(error);
   }
   res.status(200).send({

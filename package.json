@@ -5,8 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --env-file=.env servers/api-server.js",
-    "socket": "node --env-file=.env servers/socket-server.js",
+    "dev": "node --env-file=.env src/servers/api-server.js",
+    "socket": "node --env-file=.env src/servers/socket-server.js",
     "test": "node --env-file=.env ./node_modules/.bin/jest --env=node",
     "pm2:prod": "pm2 start ecosystem.config.cjs --env production",
     "pm2:dev": "pm2 start ecosystem.config.cjs --env development",

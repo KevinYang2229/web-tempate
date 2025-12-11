@@ -1,5 +1,5 @@
 @host = http://localhost:3000
-@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImlhdCI6MTc2NDc0MDE2MywiZXhwIjoxNzY0NzQwNzYzfQ.hKHHTKPez8qoY2cpEDgrrkK_Z0njzpHba4q5JFXA7Bc
+@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImlhdCI6MTc2NTM1MzY4NCwiZXhwIjoxNzY1MzU0Mjg0fQ.hN1WtPhYTpIlor6mzwyTVfUHq80jE9cNKz3IUHQGckM
 @content-type = application/json
 @accept = application/json
 @base-path = /api/v1

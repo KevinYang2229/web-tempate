@@ -24,7 +24,7 @@ const getNoteById = async (noteId) => {
   const note = await getNote(noteId);
   if (!note) {
     const error = new Error("Note not found");
-    error.status = 404;
+    error.statusCode = 404;
     throw error;
   }
   return note;
@@ -40,7 +40,7 @@ const getNoteById = async (noteId) => {
 const createNewNote = async (title, content) => {
   if (!title && !content) {
     const error = new Error("Title or content is required");
-    error.status = 400;
+    error.statusCode = 400;
     throw error;
   }
   return await createNote(title, content);
@@ -57,7 +57,7 @@ const createNewNote = async (title, content) => {
 const updateNoteById = async (noteId, title, content) => {
   if (!title && !content) {
     const error = new Error("Title or content is required");
-    error.status = 400;
+    error.statusCode = 400;
     throw error;
   }
 

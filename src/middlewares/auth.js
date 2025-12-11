@@ -9,7 +9,7 @@ const authenticateToken = async (req, res, next) => {
 
   if (!authHeader) {
     const error = new Error("No authorization header provided");
-    error.status = 401;
+    res.status(401);
     return next(error);
   }
 
@@ -25,7 +25,7 @@ const authenticateToken = async (req, res, next) => {
     } catch (error) {
       logger.error("Invalid token");
       const err = new Error("Invalid token");
-      err.status = 403;
+      res.status(403);
       return next(err);
     }
   }
@@ -42,14 +42,14 @@ const authenticateToken = async (req, res, next) => {
       const user = await getUserByUsername(username);
       if (!user) {
         const error = new Error("Invalid username or password");
-        error.status = 401;
+        res.status(401);
         return next(error);
       }
 
       const passwordMatch = await bcrypt.compare(password, user.password_hash);
       if (!passwordMatch) {
         const error = new Error("Invalid username or password");
-        error.status = 401;
+        res.status(401);
         return next(error);
       }
 
@@ -64,7 +64,7 @@ const authenticateToken = async (req, res, next) => {
     }
   } else {
     const error = new Error("Invalid authorization format");
-    error.status = 401;
+    res.status(401);
     return next(error);
   }
 };
