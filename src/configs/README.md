@@ -59,11 +59,7 @@
 在需要使用配置的檔案中,從 `constants.js` 引入所需的常數:
 
 ```javascript
-import {
-  TOKEN_SECRET,
-  COOKIE_CONFIG,
-  IS_PRODUCTION,
-} from "./configs/constants.js";
+import { TOKEN_SECRET, COOKIE_CONFIG, IS_PRODUCTION } from './configs/constants.js'
 ```
 
 ## 環境變數
