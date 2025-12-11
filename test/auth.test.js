@@ -1,9 +1,9 @@
-import request from "supertest";
-import { describe } from "@jest/globals";
-import app from "../src/servers/api-server.js";
-import { API_VERSION } from "../src/configs/constants.js";
+import request from 'supertest'
+import { describe, test, expect } from '@jest/globals'
+import app from '../src/servers/api-server.js'
+import { API_VERSION } from '../src/configs/constants.js'
 
-describe("Authentication Middleware", () => {
+describe('Authentication Middleware', () => {
   // test("register a new user", async () => {
   //   const response = await request(app).post("/api/v1/auth/register").send({
   //     username: "testuserzzz",
@@ -18,12 +18,12 @@ describe("Authentication Middleware", () => {
   //   );
   // });
 
-  test("login with valid credentials", async () => {
+  test('login with valid credentials', async () => {
     const response = await request(app)
       .post(`${API_VERSION}/auth/login`)
-      .send({ username: "testuser", password: "testpassword" });
+      .send({ username: 'testuser', password: 'testpassword' })
 
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("token");
-  });
-});
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveProperty('token')
+  })
+})

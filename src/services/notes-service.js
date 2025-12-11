@@ -1,18 +1,12 @@
-import {
-  getNotes,
-  getNote,
-  createNote,
-  updateNote,
-  deleteNote,
-} from "../models/notes.js";
+import { createNote, deleteNote,getNote, getNotes, updateNote } from '../models/notes.js'
 
 /**
  * 獲取所有筆記
  * @returns {Array} 筆記列表
  */
 const getAllNotes = async () => {
-  return await getNotes();
-};
+  return await getNotes()
+}
 
 /**
  * 根據 ID 獲取單一筆記
@@ -21,14 +15,14 @@ const getAllNotes = async () => {
  * @throws {Error} 當筆記不存在時拋出錯誤
  */
 const getNoteById = async (noteId) => {
-  const note = await getNote(noteId);
+  const note = await getNote(noteId)
   if (!note) {
-    const error = new Error("Note not found");
-    error.statusCode = 404;
-    throw error;
+    const error = new Error('Note not found')
+    error.statusCode = 404
+    throw error
   }
-  return note;
-};
+  return note
+}
 
 /**
  * 創建新筆記
@@ -39,12 +33,12 @@ const getNoteById = async (noteId) => {
  */
 const createNewNote = async (title, content) => {
   if (!title && !content) {
-    const error = new Error("Title or content is required");
-    error.statusCode = 400;
-    throw error;
+    const error = new Error('Title or content is required')
+    error.statusCode = 400
+    throw error
   }
-  return await createNote(title, content);
-};
+  return await createNote(title, content)
+}
 
 /**
  * 更新筆記
@@ -56,16 +50,16 @@ const createNewNote = async (title, content) => {
  */
 const updateNoteById = async (noteId, title, content) => {
   if (!title && !content) {
-    const error = new Error("Title or content is required");
-    error.statusCode = 400;
-    throw error;
+    const error = new Error('Title or content is required')
+    error.statusCode = 400
+    throw error
   }
 
   // 先確認筆記是否存在
-  await getNoteById(noteId);
+  await getNoteById(noteId)
 
-  return await updateNote(noteId, title, content);
-};
+  return await updateNote(noteId, title, content)
+}
 
 /**
  * 刪除筆記
@@ -75,15 +69,9 @@ const updateNoteById = async (noteId, title, content) => {
  */
 const deleteNoteById = async (noteId) => {
   // 先確認筆記是否存在
-  await getNoteById(noteId);
+  await getNoteById(noteId)
 
-  return await deleteNote(noteId);
-};
+  return await deleteNote(noteId)
+}
 
-export {
-  getAllNotes,
-  getNoteById,
-  createNewNote,
-  updateNoteById,
-  deleteNoteById,
-};
+export { createNewNote, deleteNoteById,getAllNotes, getNoteById, updateNoteById }
