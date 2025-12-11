@@ -286,16 +286,16 @@ module.exports = {
     es2022: true,
     jest: true,
   },
-  extends: ["eslint:recommended", "prettier"],
+  extends: ['eslint:recommended', 'prettier'],
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
   rules: {
-    "no-unused-vars": "warn",
-    "no-console": "off",
+    'no-unused-vars': 'warn',
+    'no-console': 'off',
   },
-};
+}
 ```
 
 ### Prettier 設定 (.prettierrc)
@@ -314,10 +314,10 @@ module.exports = {
 
 ```javascript
 export default {
-  testEnvironment: "node",
-  collectCoverageFrom: ["**/*.js", "!node_modules/**", "!coverage/**"],
-  testMatch: ["**/tests/**/*.test.js"],
-};
+  testEnvironment: 'node',
+  collectCoverageFrom: ['**/*.js', '!node_modules/**', '!coverage/**'],
+  testMatch: ['**/tests/**/*.test.js'],
+}
 ```
 
 ## 📚 學習資源
