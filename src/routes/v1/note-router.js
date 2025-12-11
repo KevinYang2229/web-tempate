@@ -1,13 +1,14 @@
-import express from "express";
+import express from 'express'
+
 import {
+  createNewNote,
+  deleteExistingNote,
   getAllNotes,
   getSingleNote,
-  createNewNote,
   updateExistingNote,
-  deleteExistingNote,
-} from "../../controllers/notes-controller.js";
+} from '../../controllers/notes-controller.js'
 
-const router = express.Router();
+const router = express.Router()
 
 /**
  * @swagger
@@ -37,7 +38,7 @@ const router = express.Router();
  *                     type: string
  *                     example: "This is a sample note."
  */
-router.get("/", getAllNotes);
+router.get('/', getAllNotes)
 /**
  * @swagger
  * /notes/{id}:
@@ -71,7 +72,7 @@ router.get("/", getAllNotes);
  *                   type: string
  *                   example: "This is a sample note."
  */
-router.get("/:id", getSingleNote);
+router.get('/:id', getSingleNote)
 /**
  * @swagger
  * /:
@@ -111,7 +112,7 @@ router.get("/:id", getSingleNote);
  *                   type: string
  *                   example: "This is the content of the new note."
  */
-router.post("/", createNewNote);
+router.post('/', createNewNote)
 /**
  * @swagger
  * /notes/{id}:
@@ -156,7 +157,7 @@ router.post("/", createNewNote);
  *                   type: string
  *                   example: "This is the updated content of the note."
  */
-router.put("/:id", updateExistingNote);
+router.put('/:id', updateExistingNote)
 /**
  * @swagger
  * /notes/{id}:
@@ -184,6 +185,6 @@ router.put("/:id", updateExistingNote);
  *                   type: string
  *                   example: Note deleted successfully
  */
-router.delete("/:id", deleteExistingNote);
+router.delete('/:id', deleteExistingNote)
 
-export default router;
+export default router

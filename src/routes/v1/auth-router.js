@@ -1,15 +1,16 @@
-import express from "express";
-import {
-  registerUser,
-  loginUser,
-  refreshAccessToken,
-  logoutUser,
-  revokeAllTokens,
-} from "../../controllers/users-controller.js";
-import { validateLogin } from "../../middlewares/validate.js";
-import authenticateToken from "../../middlewares/auth.js";
+import express from 'express'
 
-const router = express.Router();
+import {
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  registerUser,
+  revokeAllTokens,
+} from '../../controllers/users-controller.js'
+import authenticateToken from '../../middlewares/auth.js'
+import { validateLogin } from '../../middlewares/validate.js'
+
+const router = express.Router()
 /**
  * @swagger
  * /auth/register:
@@ -41,7 +42,7 @@ const router = express.Router();
  *                   type: string
  *                   example: User registered successfully
  */
-router.post("/register", registerUser);
+router.post('/register', registerUser)
 /**
  * @swagger
  * /auth/login:
@@ -73,7 +74,7 @@ router.post("/register", registerUser);
  *                   type: string
  *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  */
-router.post("/login", validateLogin, loginUser);
+router.post('/login', validateLogin, loginUser)
 
 /**
  * @swagger
@@ -100,7 +101,7 @@ router.post("/login", validateLogin, loginUser);
  *       403:
  *         description: Invalid refresh token
  */
-router.post("/refresh", refreshAccessToken);
+router.post('/refresh', refreshAccessToken)
 
 /**
  * @swagger
@@ -120,7 +121,7 @@ router.post("/refresh", refreshAccessToken);
  *                   type: string
  *                   example: "Logout successful"
  */
-router.post("/logout", logoutUser);
+router.post('/logout', logoutUser)
 
 /**
  * @swagger
@@ -144,6 +145,6 @@ router.post("/logout", logoutUser);
  *       401:
  *         description: Unauthorized - No valid access token
  */
-router.post("/revoke-all", authenticateToken, revokeAllTokens);
+router.post('/revoke-all', authenticateToken, revokeAllTokens)
 
-export default router;
+export default router
