@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
@@ -151,198 +151,182 @@
       <div id="status" class="status disconnected">未連接</div>
 
       <div style="margin: 10px 0">
-        <input
-          type="text"
-          id="usernameInput"
-          placeholder="輸入你的名稱..."
-          style="width: 50%"
-        />
+        <input type="text" id="usernameInput" placeholder="輸入你的名稱..." style="width: 50%" />
         <button onclick="setUsername()">設定名稱</button>
       </div>
 
       <div id="messages"></div>
 
       <div style="display: flex">
-        <input
-          style="flex: 1"
-          type="text"
-          id="messageInput"
-          placeholder="輸入訊息..."
-        />
+        <input style="flex: 1" type="text" id="messageInput" placeholder="輸入訊息..." />
         <button style="width: 80px" onclick="sendMessage()">發送</button>
       </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io("http://localhost:4000");
-      const statusDiv = document.getElementById("status");
-      const messagesDiv = document.getElementById("messages");
-      const messageInput = document.getElementById("messageInput");
-      const usernameInput = document.getElementById("usernameInput");
-      let myUsername = "";
+      const socket = io('http://localhost:4000')
+      const statusDiv = document.getElementById('status')
+      const messagesDiv = document.getElementById('messages')
+      const messageInput = document.getElementById('messageInput')
+      const usernameInput = document.getElementById('usernameInput')
+      let myUsername = ''
 
       // 根據使用者名稱產生固定的顏色
       function getAvatarColor(username) {
         const colors = [
-          "#e91e63",
-          "#9c27b0",
-          "#673ab7",
-          "#3f51b5",
-          "#2196f3",
-          "#00bcd4",
-          "#009688",
-          "#4caf50",
-          "#ff9800",
-          "#ff5722",
-        ];
-        let hash = 0;
+          '#e91e63',
+          '#9c27b0',
+          '#673ab7',
+          '#3f51b5',
+          '#2196f3',
+          '#00bcd4',
+          '#009688',
+          '#4caf50',
+          '#ff9800',
+          '#ff5722',
+        ]
+        let hash = 0
         for (let i = 0; i < username.length; i++) {
-          hash = username.charCodeAt(i) + ((hash << 5) - hash);
+          hash = username.charCodeAt(i) + ((hash << 5) - hash)
         }
-        return colors[Math.abs(hash) % colors.length];
+        return colors[Math.abs(hash) % colors.length]
       }
 
       // 取得使用者名稱的第一個字符作為頭像
       function getAvatarText(username) {
-        return username.charAt(0).toUpperCase();
+        return username.charAt(0).toUpperCase()
       }
 
-      socket.on("connect", () => {
-        myUsername = `訪客${socket.id.slice(0, 4)}`;
-        statusDiv.textContent = `已連接 - ${myUsername}`;
-        statusDiv.className = "status connected";
-        addMessage("系統", "已連接到服務器", "system");
-      });
+      socket.on('connect', () => {
+        myUsername = `訪客${socket.id.slice(0, 4)}`
+        statusDiv.textContent = `已連接 - ${myUsername}`
+        statusDiv.className = 'status connected'
+        addMessage('系統', '已連接到服務器', 'system')
+      })
 
       function setUsername() {
-        const newName = usernameInput.value.trim();
+        const newName = usernameInput.value.trim()
         if (newName) {
-          myUsername = newName;
-          socket.emit("set-username", newName);
-          statusDiv.textContent = `已連接 - ${myUsername}`;
-          usernameInput.value = "";
-          addMessage("系統", `你的名稱已設定為: ${newName}`, "system");
+          myUsername = newName
+          socket.emit('set-username', newName)
+          statusDiv.textContent = `已連接 - ${myUsername}`
+          usernameInput.value = ''
+          addMessage('系統', `你的名稱已設定為: ${newName}`, 'system')
         }
       }
 
-      socket.on("disconnect", () => {
-        statusDiv.textContent = "未連接";
-        statusDiv.className = "status disconnected";
-        addMessage("系統", "已斷開連接", "system");
-      });
+      socket.on('disconnect', () => {
+        statusDiv.textContent = '未連接'
+        statusDiv.className = 'status disconnected'
+        addMessage('系統', '已斷開連接', 'system')
+      })
 
       // 接收其他用戶的訊息
-      socket.on("message", (data) => {
-        addMessage(data.username, data.message, "other");
-      });
+      socket.on('message', (data) => {
+        addMessage(data.username, data.message, 'other')
+      })
 
       // 用戶加入通知
-      socket.on("user-joined", (data) => {
-        addMessage("系統", `${data.username} 加入了聊天室`, "system");
-      });
+      socket.on('user-joined', (data) => {
+        addMessage('系統', `${data.username} 加入了聊天室`, 'system')
+      })
 
       // 用戶離開通知
-      socket.on("user-left", (data) => {
-        addMessage("系統", `${data.username} 離開了聊天室`, "system");
-      });
+      socket.on('user-left', (data) => {
+        addMessage('系統', `${data.username} 離開了聊天室`, 'system')
+      })
 
       // 用戶名稱變更通知
-      socket.on("username-changed", (data) => {
+      socket.on('username-changed', (data) => {
         if (data.socketId !== socket.id) {
-          addMessage(
-            "系統",
-            `${data.oldName} 改名為 ${data.newName}`,
-            "system",
-          );
+          addMessage('系統', `${data.oldName} 改名為 ${data.newName}`, 'system')
         }
-      });
+      })
 
       function sendMessage() {
-        const message = messageInput.value.trim();
+        const message = messageInput.value.trim()
         if (message) {
-          socket.emit("message", message);
-          addMessage(`${myUsername} (你)`, message, "my");
-          messageInput.value = "";
+          socket.emit('message', message)
+          addMessage(`${myUsername} (你)`, message, 'my')
+          messageInput.value = ''
         }
       }
 
-      usernameInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          setUsername();
+      usernameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          setUsername()
         }
-      });
+      })
 
-      function addMessage(sender, message, type = "other") {
-        if (type === "system") {
-          const messageDiv = document.createElement("div");
-          messageDiv.style.textAlign = "center";
-          messageDiv.style.color = "#f57c00";
-          messageDiv.style.fontStyle = "italic";
-          messageDiv.style.fontSize = "0.9em";
-          messageDiv.style.margin = "10px 0";
-          messageDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-          messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+      function addMessage(sender, message, type = 'other') {
+        if (type === 'system') {
+          const messageDiv = document.createElement('div')
+          messageDiv.style.textAlign = 'center'
+          messageDiv.style.color = '#f57c00'
+          messageDiv.style.fontStyle = 'italic'
+          messageDiv.style.fontSize = '0.9em'
+          messageDiv.style.margin = '10px 0'
+          messageDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`
+          messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild)
         } else {
           // 創建包裝器
-          const wrapperDiv = document.createElement("div");
-          wrapperDiv.className = `message-wrapper ${
-            type === "my" ? "my-wrapper" : "other-wrapper"
-          }`;
+          const wrapperDiv = document.createElement('div')
+          wrapperDiv.className = `message-wrapper ${type === 'my' ? 'my-wrapper' : 'other-wrapper'}`
 
           // 創建頭像
-          const avatarDiv = document.createElement("div");
-          avatarDiv.className = "avatar";
-          const displayName = type === "my" ? myUsername : sender;
-          avatarDiv.style.backgroundColor = getAvatarColor(displayName);
-          avatarDiv.textContent = getAvatarText(displayName);
+          const avatarDiv = document.createElement('div')
+          avatarDiv.className = 'avatar'
+          const displayName = type === 'my' ? myUsername : sender
+          avatarDiv.style.backgroundColor = getAvatarColor(displayName)
+          avatarDiv.textContent = getAvatarText(displayName)
 
-          wrapperDiv.appendChild(avatarDiv);
+          wrapperDiv.appendChild(avatarDiv)
 
           // 創建內容包裝器（名字 + 訊息列）
-          const contentWrapper = document.createElement("div");
-          contentWrapper.className = "message-content-wrapper";
+          const contentWrapper = document.createElement('div')
+          contentWrapper.className = 'message-content-wrapper'
 
           // 只有對方的訊息顯示名字
-          if (type === "other") {
-            const nameDiv = document.createElement("div");
-            nameDiv.className = "message-name";
-            nameDiv.textContent = sender;
-            contentWrapper.appendChild(nameDiv);
+          if (type === 'other') {
+            const nameDiv = document.createElement('div')
+            nameDiv.className = 'message-name'
+            nameDiv.textContent = sender
+            contentWrapper.appendChild(nameDiv)
           }
 
           // 創建訊息和時間的橫向容器
-          const rowDiv = document.createElement("div");
-          rowDiv.className = "message-row";
+          const rowDiv = document.createElement('div')
+          rowDiv.className = 'message-row'
 
-          const messageDiv = document.createElement("div");
-          messageDiv.className = `message ${type}-message`;
+          const messageDiv = document.createElement('div')
+          messageDiv.className = `message ${type}-message`
 
-          const contentDiv = document.createElement("div");
-          contentDiv.className = "message-content";
-          contentDiv.textContent = message;
-          messageDiv.appendChild(contentDiv);
+          const contentDiv = document.createElement('div')
+          contentDiv.className = 'message-content'
+          contentDiv.textContent = message
+          messageDiv.appendChild(contentDiv)
 
           // 時間顯示在訊息旁邊
-          const timeDiv = document.createElement("div");
-          timeDiv.className = "message-time";
-          timeDiv.textContent = new Date().toLocaleTimeString();
+          const timeDiv = document.createElement('div')
+          timeDiv.className = 'message-time'
+          timeDiv.textContent = new Date().toLocaleTimeString()
 
-          rowDiv.appendChild(messageDiv);
-          rowDiv.appendChild(timeDiv);
-          contentWrapper.appendChild(rowDiv);
-          wrapperDiv.appendChild(contentWrapper);
-          messagesDiv.appendChild(wrapperDiv);
+          rowDiv.appendChild(messageDiv)
+          rowDiv.appendChild(timeDiv)
+          contentWrapper.appendChild(rowDiv)
+          wrapperDiv.appendChild(contentWrapper)
+          messagesDiv.appendChild(wrapperDiv)
         }
 
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight
       }
 
-      messageInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          sendMessage();
+      messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendMessage()
         }
-      });
+      })
     </script>
   </body>
 </html>
