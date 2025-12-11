@@ -1,8 +1,9 @@
-import express from "express";
-import { registerUser, loginUser } from "../../controllers/users-controller.js";
-import { validateLogin } from "../../middlewares/validate.js";
+import express from 'express'
 
-const router = express.Router();
+import { loginUser,registerUser } from '../../controllers/users-controller.js'
+import { validateLogin } from '../../middlewares/validate.js'
+
+const router = express.Router()
 
 /**
  * @swagger
@@ -41,7 +42,7 @@ const router = express.Router();
  *                   type: string
  *                   example: "12345"
  */
-router.post("/register", registerUser);
+router.post('/register', registerUser)
 
 /**
  * @swagger
@@ -77,6 +78,6 @@ router.post("/register", registerUser);
  *                   type: string
  *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  */
-router.post("/login", validateLogin, loginUser);
+router.post('/login', validateLogin, loginUser)
 
-export default router;
+export default router

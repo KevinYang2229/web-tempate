@@ -1,8 +1,9 @@
-import express from "express";
-import fileMiddleware from "../../middlewares/file.js";
-import { uploadFile } from "../../controllers/file-controller.js";
+import express from 'express'
 
-const router = express.Router();
+import { uploadFile } from '../../controllers/file-controller.js'
+import fileMiddleware from '../../middlewares/file.js'
+
+const router = express.Router()
 
 /**
  * @swagger
@@ -49,6 +50,6 @@ const router = express.Router();
  *                   type: string
  *                   example: "text/plain"
  */
-router.post("/upload", fileMiddleware, uploadFile);
+router.post('/upload', fileMiddleware, uploadFile)
 
-export default router;
+export default router
