@@ -48,8 +48,8 @@ export const RATE_LIMIT_MAX_REQUESTS = 100
 
 // CORS 配置
 export const CORS_ORIGINS = [
+  'http://localhost:80',
   'http://localhost:3000',
-  'http://localhost:3300',
   'https://editor.swagger.io',
 ]
 

@@ -1,0 +1,10 @@
+web-flow.md
+Readme.md
+docker-compose.yml
+.dockerignore
+.gitignore
+.eslintrc.json
+.prettierrc
+tsconfig.json
+/logs
+/node_modules

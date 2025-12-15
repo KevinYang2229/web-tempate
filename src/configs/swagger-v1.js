@@ -2,7 +2,7 @@ import { join } from 'path'
 import swaggerJSDoc from 'swagger-jsdoc'
 
 const projectDirName = process.cwd()
-const __dirname = join(projectDirName, 'src', 'shared', 'configs')
+const __dirname = join(projectDirName, 'src', 'configs')
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
